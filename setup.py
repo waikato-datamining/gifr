@@ -37,4 +37,9 @@ setup(
     version="0.0.1",
     author='Peter Reutemann',
     author_email='fracpete@waikato.ac.nz',
+    entry_points={
+        "console_scripts": [
+            "gifr-imgcls=gifr.image_classification:sys_main",
+        ],
+    },
 )
