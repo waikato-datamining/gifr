@@ -40,6 +40,7 @@ setup(
     entry_points={
         "console_scripts": [
             "gifr-imgcls=gifr.image_classification:sys_main",
+            "gifr-textgen=gifr.text_generation:sys_main",
         ],
     },
 )
