@@ -14,25 +14,21 @@ _logger = logging.getLogger(PROG)
 state: State = None
 
 
-def predict(img_file: str) -> str:
+def predict(text: str) -> str:
     """
-    Sends the image to the model and returns the result.
+    Sends the text to the model and returns the completed text.
 
-    :param img_file: the image to send
-    :type img_file: str
+    :param text: the text to send
+    :type text: str
     :return: the prediction result
     :rtype: str
     """
     global state
-    state.logger.info("Loading: %s" % img_file)
-    with open(img_file, "rb") as f:
-        content = f.read()
-
-    data = make_prediction(state, content)
-    if data is None:
-        result = {"no result": 0.0}
-    else:
-        result = json.loads(data.decode())
+    state.logger.info("Completing: %s" % text)
+    d = {"prompt": text}
+    result = make_prediction(state, json.dumps(d))
+    if result is None:
+        result = "no result"
     state.logger.info("Prediction: %s" % result)
     return result
 
