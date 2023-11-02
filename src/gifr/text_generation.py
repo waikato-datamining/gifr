@@ -29,6 +29,8 @@ def predict(text: str) -> str:
     result = make_prediction(state, json.dumps(d))
     if result is None:
         result = "no result"
+    else:
+        result = result.decode()
     state.logger.info("Prediction: %s" % result)
     return result
 
