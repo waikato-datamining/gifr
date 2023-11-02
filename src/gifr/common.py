@@ -130,7 +130,6 @@ def init_state(ns: argparse.Namespace) -> State:
     :return: the state container
     :rtype: State
     """
-    print(dir(ns))
     result = State(
         connection=redis.Redis(host=ns.redis_host, port=ns.redis_port, db=ns.redis_db),
         channel_in=ns.model_channel_in,
