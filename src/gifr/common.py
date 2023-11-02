@@ -3,7 +3,7 @@ import logging
 import os
 import redis
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 from time import sleep
 
@@ -34,6 +34,7 @@ class State:
     timeout: float = 5.0
     data = None
     logger: logging.Logger = None
+    params: dict = field(default_factory=dict)
 
 
 def str_to_logging_level(level: str) -> int:
