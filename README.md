@@ -22,8 +22,8 @@ usage: gifr-imgcls [-h] [--redis_host HOST] [--redis_port PORT]
                    [--launch_browser] [--share_interface]
                    [--logging_level {DEBUG,INFO,WARN,ERROR,CRITICAL}]
 
-Image classification interface. Allows the user to select an image and
-displays the probabilities per label.
+Image classification interface. Allows the user to select an image and display
+the probabilities per label that the model generated.
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -37,7 +37,7 @@ optional arguments:
                         The channel to receive the predictions on. (default:
                         predictions)
   --timeout SECONDS     The number of seconds to wait for a prediction.
-                        (default: 5.0)
+                        (default: 1.0)
   --launch_browser      Whether to automatically launch the interface in a new
                         tab of the default browser. (default: False)
   --share_interface     Whether to publicly share the interface at

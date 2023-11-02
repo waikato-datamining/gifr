@@ -63,8 +63,9 @@ def main(args=None):
     """
     global state
     init_logging()
-    parser = create_parser("Image classification interface. Allows the user to select an image and displays the probabilities per label.",
-                           PROG, model_channel_in="images", model_channel_out="predictions")
+    parser = create_parser("Image classification interface. Allows the user to select an image "
+                           + "and display the probabilities per label that the model generated.",
+                           PROG, model_channel_in="images", model_channel_out="predictions", timeout=1.0)
     parsed = parser.parse_args(args=args)
     set_logging_level(_logger, parsed.logging_level)
     state = init_state(parsed)
