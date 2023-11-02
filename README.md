@@ -15,6 +15,8 @@ pip install git+https://github.com/waikato-datamining/gifr.git
 
 ### Image classification
 
+![Screenshot](doc/img/imgcls.png)
+
 ```
 usage: gifr-imgcls [-h] [--redis_host HOST] [--redis_port PORT]
                    [--redis_db DB] [--model_channel_in CHANNEL]
@@ -47,6 +49,8 @@ optional arguments:
 ```
 
 ### Text generation
+
+![Screenshot](doc/img/textgen.png)
 
 ```
 usage: gifr-textgen [-h] [--redis_host HOST] [--redis_port PORT]
