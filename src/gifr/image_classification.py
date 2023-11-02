@@ -54,6 +54,16 @@ def create_interface() -> gr.Interface:
         allow_flagging="never")
 
 
+def finish_init_state(state: State):
+    """
+    Finalizes the initialization of the state.
+
+    :param state: the state to update
+    :type state: State
+    """
+    state.logger = _logger
+
+
 def main(args=None):
     """
     The main method for parsing command-line arguments.
@@ -69,7 +79,7 @@ def main(args=None):
     parsed = parser.parse_args(args=args)
     set_logging_level(_logger, parsed.logging_level)
     state = init_state(parsed)
-    state.logger = _logger
+    finish_init_state(state)
     ui = create_interface()
     ui.launch(show_api=False, share=parsed.share_interface, inbrowser=parsed.launch_browser)
 

@@ -123,19 +123,28 @@ def create_parser(description: str, prog: str, host: str = "localhost", port: in
 
 def init_state(ns: argparse.Namespace) -> State:
     """
-    Initializes the redis state container with the supplied parameters.
+    Initializes the redis state container with the supplied parsed parameters.
 
     :param ns: the parsed options
     :type ns: argparse.Namespace
     :return: the state container
     :rtype: State
     """
+    print(dir(ns))
     result = State(
         connection=redis.Redis(host=ns.redis_host, port=ns.redis_port, db=ns.redis_db),
         channel_in=ns.model_channel_in,
         channel_out=ns.model_channel_out,
         timeout=ns.timeout,
     )
+
+    for att in dir(ns):
+        if att.startswith("_"):
+            continue
+        if att in ["redis_host", "redis_port", "redis_db", "model_channel_in", "model_channel_out", "timeout"]:
+            continue
+        result.params[att] = getattr(ns, att)
+
     return result
 
 
