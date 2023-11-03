@@ -1,6 +1,6 @@
 # gifr
-[gradio](https://www.gradio.app/) interfaces for Deep Learning Docker images that use Redis for receiving
-data to make predictions on.
+[gradio](https://www.gradio.app/) interfaces for Deep Learning Docker images 
+that use Redis for receiving data to make predictions on.
 
 https://www.data-mining.co.nz/docker-images/
 
@@ -11,11 +11,22 @@ https://www.data-mining.co.nz/docker-images/
 pip install git+https://github.com/waikato-datamining/gifr.git
 ```
 
+
+## Tutorials
+
+Here are tutorials for a range of Docker images:
+
+* [Image classification](https://www.data-mining.co.nz/applied-deep-learning/image_classification/)
+* [Image segmentation](https://www.data-mining.co.nz/applied-deep-learning/image_segmentation/)
+* [Instance segmentation](https://www.data-mining.co.nz/applied-deep-learning/instance_segmentation/) (can use Object detection interface as well)  
+* [Object detection](https://www.data-mining.co.nz/applied-deep-learning/object_detection/)
+
+
 ## Interfaces
 
 ### Image classification
 
-![Screenshot](doc/img/imgcls.png)
+![Screenshot image classification](doc/img/imgcls.png)
 
 ```
 usage: gifr-imgcls [-h] [--redis_host HOST] [--redis_port PORT]
@@ -48,9 +59,55 @@ optional arguments:
                         The logging level to use (default: WARN)
 ```
 
-### Object detection
 
-![Screenshot](doc/img/objdet.png)
+### Image segmentation
+
+![Screenshot image segmentation](doc/img/imgseg.png)
+
+```
+usage: gifr-imgseg [-h] [--redis_host HOST] [--redis_port PORT]
+                   [--redis_db DB] [--model_channel_in CHANNEL]
+                   [--model_channel_out CHANNEL] [--timeout SECONDS]
+                   [--launch_browser] [--share_interface]
+                   [--logging_level {DEBUG,INFO,WARN,ERROR,CRITICAL}]
+                   [--prediction_type {auto,blue-channel,grayscale,indexed-png}]
+                   [--alpha NUM] [--only_mask]
+
+Image segmentation interface. Allows the user to select an image and display
+the generated pixel mask overlayed.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --redis_host HOST     The host with the redis server. (default: localhost)
+  --redis_port PORT     The port of the redis server. (default: 6379)
+  --redis_db DB         The redis database to use. (default: 0)
+  --model_channel_in CHANNEL
+                        The channel to send the data to for making
+                        predictions. (default: images)
+  --model_channel_out CHANNEL
+                        The channel to receive the predictions on. (default:
+                        predictions)
+  --timeout SECONDS     The number of seconds to wait for a prediction.
+                        (default: 2.0)
+  --launch_browser      Whether to automatically launch the interface in a new
+                        tab of the default browser. (default: False)
+  --share_interface     Whether to publicly share the interface at
+                        https://XYZ.gradio.live/. (default: False)
+  --logging_level {DEBUG,INFO,WARN,ERROR,CRITICAL}
+                        The logging level to use (default: WARN)
+  --prediction_type {auto,blue-channel,grayscale,indexed-png}
+                        The type of image that the model returns (default:
+                        auto)
+  --alpha NUM           The alpha value to use for the overlay (0:
+                        transparent, 255: opaque). (default: 128)
+  --only_mask           Whether to show only the predicted mask rather than
+                        overlaying it. (default: False)
+```
+
+
+### Object detection/Instance segmentation
+
+![Screenshot object detection](doc/img/objdet.png)
 
 ```
 usage: gifr-objdet [-h] [--redis_host HOST] [--redis_port PORT]
@@ -114,7 +171,7 @@ optional arguments:
 
 ### Text generation
 
-![Screenshot](doc/img/textgen.png)
+![Screenshot text generation](doc/img/textgen.png)
 
 ```
 usage: gifr-textgen [-h] [--redis_host HOST] [--redis_port PORT]

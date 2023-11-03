@@ -6,6 +6,7 @@ use Redis for receiving data to make predictions on.
 Interfaces are available for:
 
 - image classification
-- object detection
+- image segmentation
+- object detection/instance segmentation
 - text generation
 

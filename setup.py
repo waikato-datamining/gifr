@@ -41,6 +41,7 @@ setup(
     entry_points={
         "console_scripts": [
             "gifr-imgcls=gifr.image_classification:sys_main",
+            "gifr-imgseg=gifr.image_segmentation:sys_main",
             "gifr-objdet=gifr.object_detection:sys_main",
             "gifr-textgen=gifr.text_generation:sys_main",
         ],
