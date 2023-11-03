@@ -35,9 +35,12 @@ def predict(text: str) -> str:
     return result
 
 
-def create_interface() -> gr.Interface:
+def create_interface(state: State) -> gr.Interface:
     """
     Generates the interface.
+
+    :param state: the state to use
+    :type state: State
     """
     return gr.Interface(
         title="Text Generation",
@@ -52,7 +55,7 @@ def create_interface() -> gr.Interface:
         allow_flagging="never")
 
 
-def finish_init_state(state: State):
+def post_init_state(state: State):
     """
     Finalizes the initialization of the state.
 
@@ -77,8 +80,8 @@ def main(args=None):
     parsed = parser.parse_args(args=args)
     set_logging_level(_logger, parsed.logging_level)
     state = init_state(parsed)
-    finish_init_state(state)
-    ui = create_interface()
+    post_init_state(state)
+    ui = create_interface(state)
     ui.launch(show_api=False, share=parsed.share_interface, inbrowser=parsed.launch_browser)
 
 
