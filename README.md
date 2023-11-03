@@ -7,6 +7,14 @@ https://www.data-mining.co.nz/docker-images/
 
 ## Installation
 
+### Latest release
+
+```bash
+pip install gifr
+```
+
+### Latest from Github
+
 ```bash
 pip install git+https://github.com/waikato-datamining/gifr.git
 ```
