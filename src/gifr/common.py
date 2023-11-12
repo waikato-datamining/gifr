@@ -32,6 +32,8 @@ class State:
     channel_out: str = "redis_in"
     channel_in: str = "redis_out"
     timeout: float = 5.0
+    title: str = "gifr"
+    description: str = ""
     data = None
     logger: logging.Logger = None
     params: dict = field(default_factory=dict)
@@ -86,7 +88,7 @@ def set_logging_level(logger: logging.Logger, level: str):
 
 def create_parser(description: str, prog: str, host: str = "localhost", port: int = 6379, db: int = 0,
                   model_channel_in: str = "model_channel_in", model_channel_out: str = "model_channel_out",
-                  timeout: float = 5.0) -> argparse.ArgumentParser:
+                  timeout: float = 5.0, ui_title: str = "gifr", ui_desc: str = "") -> argparse.ArgumentParser:
     """
     Creates a base parser with options for redis.
 
@@ -106,6 +108,10 @@ def create_parser(description: str, prog: str, host: str = "localhost", port: in
     :type model_channel_out: str
     :param timeout: the number of seconds to wait for a prediction
     :type timeout: float
+    :param ui_title: the title to use for the interface
+    :type ui_title: str
+    :param ui_desc: the description to use in the interface
+    :type ui_desc: str
     """
     parser = argparse.ArgumentParser(
         description=description, prog=prog, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -115,6 +121,8 @@ def create_parser(description: str, prog: str, host: str = "localhost", port: in
     parser.add_argument("--model_channel_in", metavar="CHANNEL", help="The channel to send the data to for making predictions.", default=model_channel_in, type=str, required=False)
     parser.add_argument("--model_channel_out", metavar="CHANNEL", help="The channel to receive the predictions on.", default=model_channel_out, type=str, required=False)
     parser.add_argument("--timeout", metavar="SECONDS", help="The number of seconds to wait for a prediction.", default=timeout, type=float, required=False)
+    parser.add_argument("--title", metavar="TITLE", help="The title to use for interface.", default=ui_title, type=str, required=False)
+    parser.add_argument("--description", metavar="DESC", help="The description to use in the interface.", default=ui_desc, type=str, required=False)
     parser.add_argument("--launch_browser", action="store_true", help="Whether to automatically launch the interface in a new tab of the default browser.")
     parser.add_argument("--share_interface", action="store_true", help="Whether to publicly share the interface at https://XYZ.gradio.live/.")
     parser.add_argument("--logging_level", choices=LOGGING_LEVELS, default=LOGGING_WARN, help="The logging level to use")
@@ -135,12 +143,14 @@ def init_state(ns: argparse.Namespace) -> State:
         channel_in=ns.model_channel_in,
         channel_out=ns.model_channel_out,
         timeout=ns.timeout,
+        title=ns.title,
+        description=ns.description,
     )
 
     for att in dir(ns):
         if att.startswith("_"):
             continue
-        if att in ["redis_host", "redis_port", "redis_db", "model_channel_in", "model_channel_out", "timeout"]:
+        if att in ["redis_host", "redis_port", "redis_db", "model_channel_in", "model_channel_out", "timeout", "title", "description"]:
             continue
         result.params[att] = getattr(ns, att)
 

@@ -224,8 +224,8 @@ def create_interface(state: State) -> gr.Interface:
     :type state: State
     """
     return gr.Interface(
-        title="Object detection",
-        description="Sends the selected image to the model and overlays the predicted objects on it in the output.",
+        title=state.title,
+        description=state.description,
         fn=predict,
         inputs=[
             gr.Image(type="filepath", label="Input"),
@@ -264,7 +264,9 @@ def main(args=None):
     init_logging()
     parser = create_parser("Object detection interface. Allows the user to select an image "
                            + "and overlay the predictions that the model generated.",
-                           PROG, model_channel_in="images", model_channel_out="predictions", timeout=1.0)
+                           PROG, model_channel_in="images", model_channel_out="predictions",
+                           timeout=1.0, ui_title="Object detection",
+                           ui_desc="Sends the selected image to the model and overlays the predicted objects on it in the output.")
     parser.add_argument("--min_score", metavar="FLOAT", help="The minimum score a prediction must have (0-1).", default=0.0, type=float, required=False)
     parser.add_argument("--text_format", metavar="FORMAT", help="The format for the text, placeholders: {label}, {score}.", default="{label}", type=str, required=False)
     parser.add_argument("--text_placement", metavar="V,H", help="Comma-separated list of vertical (T=top, C=center, B=bottom) and horizontal (L=left, C=center, R=right) anchoring.", default="T,L", type=str, required=False)

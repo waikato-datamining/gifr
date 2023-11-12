@@ -45,7 +45,7 @@ def create_interface(state: State) -> gr.Interface:
     :type state: State
     """
     return gr.Interface(
-        title="Image classification",
+        title=state.title,
         description="Sends the selected image to the model and displays the generated prediction results.",
         fn=predict,
         inputs=[
@@ -78,7 +78,9 @@ def main(args=None):
     init_logging()
     parser = create_parser("Image classification interface. Allows the user to select an image "
                            + "and display the probabilities per label that the model generated.",
-                           PROG, model_channel_in="images", model_channel_out="predictions", timeout=1.0)
+                           PROG, model_channel_in="images", model_channel_out="predictions",
+                           timeout=1.0, ui_title="Image classification",
+                           ui_desc="Sends the selected image to the model and displays the generated prediction results.")
     parsed = parser.parse_args(args=args)
     set_logging_level(_logger, parsed.logging_level)
     state = init_state(parsed)

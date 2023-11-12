@@ -40,7 +40,8 @@ Here are tutorials for a range of Docker images:
 usage: gifr-imgcls [-h] [--redis_host HOST] [--redis_port PORT]
                    [--redis_db DB] [--model_channel_in CHANNEL]
                    [--model_channel_out CHANNEL] [--timeout SECONDS]
-                   [--launch_browser] [--share_interface]
+                   [--title TITLE] [--description DESC] [--launch_browser]
+                   [--share_interface]
                    [--logging_level {DEBUG,INFO,WARN,ERROR,CRITICAL}]
 
 Image classification interface. Allows the user to select an image and display
@@ -59,6 +60,11 @@ optional arguments:
                         predictions)
   --timeout SECONDS     The number of seconds to wait for a prediction.
                         (default: 1.0)
+  --title TITLE         The title to use for interface. (default: Image
+                        classification)
+  --description DESC    The description to use in the interface. (default:
+                        Sends the selected image to the model and displays the
+                        generated prediction results.)
   --launch_browser      Whether to automatically launch the interface in a new
                         tab of the default browser. (default: False)
   --share_interface     Whether to publicly share the interface at
@@ -76,7 +82,8 @@ optional arguments:
 usage: gifr-imgseg [-h] [--redis_host HOST] [--redis_port PORT]
                    [--redis_db DB] [--model_channel_in CHANNEL]
                    [--model_channel_out CHANNEL] [--timeout SECONDS]
-                   [--launch_browser] [--share_interface]
+                   [--title TITLE] [--description DESC] [--launch_browser]
+                   [--share_interface]
                    [--logging_level {DEBUG,INFO,WARN,ERROR,CRITICAL}]
                    [--prediction_type {auto,blue-channel,grayscale,indexed-png}]
                    [--alpha NUM] [--only_mask]
@@ -97,6 +104,11 @@ optional arguments:
                         predictions)
   --timeout SECONDS     The number of seconds to wait for a prediction.
                         (default: 2.0)
+  --title TITLE         The title to use for interface. (default: Image
+                        segmentation)
+  --description DESC    The description to use in the interface. (default:
+                        Sends the selected image to the model and shows the
+                        result (overlay or pixel mask).)
   --launch_browser      Whether to automatically launch the interface in a new
                         tab of the default browser. (default: False)
   --share_interface     Whether to publicly share the interface at
@@ -121,7 +133,8 @@ optional arguments:
 usage: gifr-objdet [-h] [--redis_host HOST] [--redis_port PORT]
                    [--redis_db DB] [--model_channel_in CHANNEL]
                    [--model_channel_out CHANNEL] [--timeout SECONDS]
-                   [--launch_browser] [--share_interface]
+                   [--title TITLE] [--description DESC] [--launch_browser]
+                   [--share_interface]
                    [--logging_level {DEBUG,INFO,WARN,ERROR,CRITICAL}]
                    [--min_score FLOAT] [--text_format FORMAT]
                    [--text_placement V,H] [--font_family NAME]
@@ -145,6 +158,11 @@ optional arguments:
                         predictions)
   --timeout SECONDS     The number of seconds to wait for a prediction.
                         (default: 1.0)
+  --title TITLE         The title to use for interface. (default: Object
+                        detection)
+  --description DESC    The description to use in the interface. (default:
+                        Sends the selected image to the model and overlays the
+                        predicted objects on it in the output.)
   --launch_browser      Whether to automatically launch the interface in a new
                         tab of the default browser. (default: False)
   --share_interface     Whether to publicly share the interface at
@@ -185,7 +203,8 @@ optional arguments:
 usage: gifr-textgen [-h] [--redis_host HOST] [--redis_port PORT]
                     [--redis_db DB] [--model_channel_in CHANNEL]
                     [--model_channel_out CHANNEL] [--timeout SECONDS]
-                    [--launch_browser] [--share_interface]
+                    [--title TITLE] [--description DESC] [--launch_browser]
+                    [--share_interface]
                     [--logging_level {DEBUG,INFO,WARN,ERROR,CRITICAL}]
 
 Text generation interface. Allows the user to enter text and display the text
@@ -204,6 +223,11 @@ optional arguments:
                         prediction)
   --timeout SECONDS     The number of seconds to wait for a prediction.
                         (default: 1.0)
+  --title TITLE         The title to use for interface. (default: Text
+                        generation)
+  --description DESC    The description to use in the interface. (default:
+                        Sends the entered text to the model to complete and
+                        displays the result.)
   --launch_browser      Whether to automatically launch the interface in a new
                         tab of the default browser. (default: False)
   --share_interface     Whether to publicly share the interface at

@@ -136,13 +136,9 @@ def create_interface(state: State) -> gr.Interface:
     """
     Generates the interface.
     """
-    if state.params["only_mask"]:
-        desc = "Sends the selected image to the model and show the generated pixel mask."
-    else:
-        desc = "Sends the selected image to the model and overlays the generated pixel mask."
     return gr.Interface(
-        title="Image segmentation",
-        description=desc,
+        title=state.title,
+        description=state.description,
         fn=predict,
         inputs=[
             gr.Image(type="filepath", label="Input"),
@@ -177,7 +173,9 @@ def main(args=None):
     init_logging()
     parser = create_parser("Image segmentation interface. Allows the user to select an image "
                            + "and display the generated pixel mask overlayed.",
-                           PROG, model_channel_in="images", model_channel_out="predictions", timeout=2.0)
+                           PROG, model_channel_in="images", model_channel_out="predictions",
+                           timeout=2.0, ui_title="Image segmentation",
+                           ui_desc="Sends the selected image to the model and shows the result (overlay or pixel mask).")
     parser.add_argument("--prediction_type", choices=PREDICTION_TYPES, default=PREDICTION_TYPE_AUTO, help="The type of image that the model returns")
     parser.add_argument("--alpha", metavar="NUM", help="The alpha value to use for the overlay (0: transparent, 255: opaque).", default=128, type=int, required=False)
     parser.add_argument("--only_mask", action="store_true", help="Whether to show only the predicted mask rather than overlaying it.")
