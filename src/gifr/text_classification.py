@@ -28,13 +28,21 @@ def predict(text: str) -> Tuple[str, float]:
     global state
     state.logger.info("Classifying: %s" % text)
     d = {"text": text}
-    result = make_prediction(state, json.dumps(d))
-    if result is None:
-        result = {}
+    prediction = make_prediction(state, json.dumps(d))
+    if prediction is None:
+        label = ""
+        score = -1
     else:
-        result = json.loads(result.decode())
-    state.logger.info("Prediction: %s" % result)
-    return result["label"], result["score"]
+        try:
+            d = json.loads(prediction.decode())
+            label = d["text"]
+            score = d["score"]
+        except:
+            label = prediction.decode()
+            score = -1
+
+    state.logger.info("Prediction: %s -> label=%s, score=%f" % (prediction, label, score))
+    return label, score
 
 
 def create_interface(state: State) -> gr.Interface:
