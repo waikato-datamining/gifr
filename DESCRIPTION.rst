@@ -8,5 +8,6 @@ Interfaces are available for:
 - image classification
 - image segmentation
 - object detection/instance segmentation
+- text classification
 - text generation
 
