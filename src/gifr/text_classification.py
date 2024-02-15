@@ -35,7 +35,7 @@ def predict(text: str) -> Tuple[str, float]:
     else:
         try:
             d = json.loads(prediction.decode())
-            label = d["text"]
+            label = d["label"]
             score = d["score"]
         except:
             label = prediction.decode()
