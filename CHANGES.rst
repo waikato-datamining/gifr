@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.0.3 (????-??-??)
+0.0.3 (2024-02-15)
 ------------------
 
 - added interface for text classification
