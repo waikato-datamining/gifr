@@ -4,8 +4,8 @@ Changelog
 0.0.4 (????-??-??)
 ------------------
 
-- extended text generation interface to keep track of inputs and #turns (*history*)
-  and supports JSON response now as well
+- extended text generation interface to keep track of inputs and #turns (*history*);
+  added support for JSON responses; field name in JSON prompt is now customizable
 
 
 0.0.3 (2024-02-15)
