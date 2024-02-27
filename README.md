@@ -248,8 +248,9 @@ usage: gifr-textgen [-h] [--redis_host HOST] [--redis_port PORT]
                     [--title TITLE] [--description DESC] [--launch_browser]
                     [--share_interface]
                     [--logging_level {DEBUG,INFO,WARN,ERROR,CRITICAL}]
-                    [--json_response] [--receive_prediction FIELD]
-                    [--history_on] [--send_history FIELD] [--send_turns FIELD]
+                    [--send_text FIELD] [--json_response]
+                    [--receive_prediction FIELD] [--history_on]
+                    [--send_history FIELD] [--send_turns FIELD]
                     [--receive_history FIELD] [--receive_turns FIELD]
                     [--clean_response]
 
@@ -280,6 +281,8 @@ optional arguments:
                         https://XYZ.gradio.live/. (default: False)
   --logging_level {DEBUG,INFO,WARN,ERROR,CRITICAL}
                         The logging level to use (default: WARN)
+  --send_text FIELD     The field name in the JSON prompt used for sending the
+                        text, ignored if not provided. (default: prompt)
   --json_response       Whether the reponse is a JSON object. (default: False)
   --receive_prediction FIELD
                         The field name in the JSON response used for receiving

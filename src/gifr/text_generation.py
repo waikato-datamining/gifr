@@ -27,7 +27,7 @@ def predict(text: str) -> str:
     state.logger.info("Completing: %s" % text)
 
     # build query
-    d = {"prompt": text}
+    d = {state.params["send_text"]: text}
     if state.params["history_on"]:
         if state.params["send_history"] is not None:
             d[state.params["send_history"]] = state.history
@@ -116,6 +116,7 @@ def main(args=None):
                            PROG, model_channel_in="text", model_channel_out="prediction",
                            timeout=1.0, ui_title="Text generation",
                            ui_desc="Sends the entered text to the model to complete and displays the result.")
+    parser.add_argument("--send_text", metavar="FIELD", help="The field name in the JSON prompt used for sending the text, ignored if not provided.", default="prompt", type=str, required=False)
     parser.add_argument("--json_response", action="store_true", help="Whether the reponse is a JSON object.")
     parser.add_argument("--receive_prediction", metavar="FIELD", help="The field name in the JSON response used for receiving the predicted text, ignored if not provided.", default="text", type=str, required=False)
     parser.add_argument("--history_on", action="store_true", help="Whether to keep track of the interactions.")
