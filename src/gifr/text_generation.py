@@ -28,11 +28,11 @@ def predict(text: str) -> str:
 
     # build query
     d = {"prompt": text}
-    if state.history_on:
-        if state.send_history is not None:
-            d[state.send_history] = state.history
-        if state.send_turns is not None:
-            d[state.send_turns] = state.turns
+    if state.params["history_on"]:
+        if state.params["send_history"] is not None:
+            d[state.params["send_history"]] = state.history
+        if state.params["send_turns"] is not None:
+            d[state.params["send_turns"]] = state.turns
 
     # perform query
     result = make_prediction(state, json.dumps(d))
@@ -41,16 +41,16 @@ def predict(text: str) -> str:
     if result is None:
         result = "no result"
     else:
-        if state.json_response:
+        if state.params["json_response"]:
             try:
                 d = json.loads(result.decode())
-                result = d[state.receive_prediction]
-                if state.history_on:
-                    if state.receive_history in d:
-                        state.history = d[state.receive_history]
+                result = d[state.params["receive_prediction"]]
+                if state.params["history_on"]:
+                    if state.params["receive_history"] in d:
+                        state.history = d[state.params["receive_history"]]
                         _logger.info("History: %s" % str(state.history))
-                    if state.receive_turns in d:
-                        state.turns = d[state.receive_turns]
+                    if state.params["receive_turns"] in d:
+                        state.turns = d[state.params["receive_turns"]]
                         _logger.info("Turns: %s" % str(state.turns))
             except:
                 result = "Failed to parse: %s" % str(result)
