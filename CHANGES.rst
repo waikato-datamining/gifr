@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.0.4 (????-??-??)
+0.0.4 (2024-02-27)
 ------------------
 
 - extended text generation interface to keep track of inputs and #turns (*history*);
