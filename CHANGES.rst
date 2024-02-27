@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.0.4 (????-??-??)
+------------------
+
+- extended text generation interface to keep track of inputs and #turns (*history*)
+  and supports JSON response now as well
+
+
 0.0.3 (2024-02-15)
 ------------------
 

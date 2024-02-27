@@ -25,12 +25,41 @@ def predict(text: str) -> str:
     """
     global state
     state.logger.info("Completing: %s" % text)
+
+    # build query
     d = {"prompt": text}
+    if state.history_on:
+        if state.send_history is not None:
+            d[state.send_history] = state.history
+        if state.send_turns is not None:
+            d[state.send_turns] = state.turns
+
+    # perform query
     result = make_prediction(state, json.dumps(d))
+
+    # parse response
     if result is None:
         result = "no result"
     else:
-        result = result.decode()
+        if state.json_response:
+            try:
+                d = json.loads(result.decode())
+                result = d[state.receive_prediction]
+                if state.history_on:
+                    if state.receive_history in d:
+                        state.history = d[state.receive_history]
+                        _logger.info("History: %s" % str(state.history))
+                    if state.receive_turns in d:
+                        state.turns = d[state.receive_turns]
+                        _logger.info("Turns: %s" % str(state.turns))
+            except:
+                result = "Failed to parse: %s" % str(result)
+        else:
+            try:
+                result = result.decode()
+            except:
+                result = "Failed to parse: %s" % str(result)
+
     state.logger.info("Prediction: %s" % result)
     return result
 
@@ -63,6 +92,8 @@ def post_init_state(state: State):
     :type state: State
     """
     state.logger = _logger
+    state.history = ""
+    state.turns = 0
 
 
 def main(args=None):
@@ -79,6 +110,13 @@ def main(args=None):
                            PROG, model_channel_in="text", model_channel_out="prediction",
                            timeout=1.0, ui_title="Text generation",
                            ui_desc="Sends the entered text to the model to complete and displays the result.")
+    parser.add_argument("--json_response", action="store_true", help="Whether the reponse is a JSON object.")
+    parser.add_argument("--receive_prediction", metavar="FIELD", help="The field name in the JSON response used for receiving the predicted text, ignored if not provided.", default="text", type=str, required=False)
+    parser.add_argument("--history_on", action="store_true", help="Whether to keep track of the interactions.")
+    parser.add_argument("--send_history", metavar="FIELD", help="The field name in the JSON query to use for sending the input history, ignored if not provided.", default=None, type=str, required=False)
+    parser.add_argument("--send_turns", metavar="FIELD", help="The field name in the JSON query to use for sending the number of turns in the interaction, ignored if not provided.", default=None, type=int, required=False)
+    parser.add_argument("--receive_history", metavar="FIELD", help="The field name in the JSON response used for receiving the input history, ignored if not provided.", default=None, type=str, required=False)
+    parser.add_argument("--receive_turns", metavar="FIELD", help="The field name in the JSON response used for receiving the number of turns in the interaction, ignored if not provided.", default=None, type=int, required=False)
     parsed = parser.parse_args(args=args)
     set_logging_level(_logger, parsed.logging_level)
     state = init_state(parsed)
