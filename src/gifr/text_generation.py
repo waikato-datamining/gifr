@@ -61,6 +61,12 @@ def predict(text: str) -> str:
                 result = "Failed to parse: %s" % str(result)
 
     state.logger.info("Prediction: %s" % result)
+    if state.params["clean_response"]:
+        result = result.strip()
+        if result.endswith("</s>"):
+            result = result[0:-4]
+            result = result.strip()
+
     return result
 
 
@@ -117,6 +123,7 @@ def main(args=None):
     parser.add_argument("--send_turns", metavar="FIELD", help="The field name in the JSON query to use for sending the number of turns in the interaction, ignored if not provided.", default=None, type=int, required=False)
     parser.add_argument("--receive_history", metavar="FIELD", help="The field name in the JSON response used for receiving the input history, ignored if not provided.", default=None, type=str, required=False)
     parser.add_argument("--receive_turns", metavar="FIELD", help="The field name in the JSON response used for receiving the number of turns in the interaction, ignored if not provided.", default=None, type=int, required=False)
+    parser.add_argument("--clean_response", action="store_true", help="Whether to clean up the response.")
     parsed = parser.parse_args(args=args)
     set_logging_level(_logger, parsed.logging_level)
     state = init_state(parsed)
