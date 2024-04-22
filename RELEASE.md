@@ -26,7 +26,7 @@ Steps:
 
 * start new release (version: `vX.Y.Z`)
 * enter release notes, i.e., significant changes since last release
-* upload `gifr-X.Y.Z.tar.gz` previously generated with `setUp.py`
+* upload `gifr-X.Y.Z.tar.gz` previously generated with `setup.py`
 * publish
 
 
