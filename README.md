@@ -34,7 +34,7 @@ Here are tutorials for a range of Docker images:
 
 ### Automatic Speech Recognition (ASR)
 
-![Screenshot image classification](doc/img/imgcls.png)
+![Screenshot automatic speech recognition](doc/img/asr.png)
 
 ```
 usage: gifr-asr [-h] [--redis_host HOST] [--redis_port PORT] [--redis_db DB]
