@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.0.5 (????-??-??)
+0.0.5 (2024-05-27)
 ------------------
 
 - added interface for automatic speech recognition (ASR)
