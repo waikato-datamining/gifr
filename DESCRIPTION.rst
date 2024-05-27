@@ -5,6 +5,7 @@ use Redis for receiving data to make predictions on.
 
 Interfaces are available for:
 
+- automatic speech recognition (ASR)
 - image classification
 - image segmentation
 - object detection/instance segmentation

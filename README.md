@@ -32,6 +32,46 @@ Here are tutorials for a range of Docker images:
 
 ## Interfaces
 
+### Automatic Speech Recognition (ASR)
+
+![Screenshot image classification](doc/img/imgcls.png)
+
+```
+usage: gifr-asr [-h] [--redis_host HOST] [--redis_port PORT] [--redis_db DB]
+                [--model_channel_in CHANNEL] [--model_channel_out CHANNEL]
+                [--timeout SECONDS] [--title TITLE] [--description DESC]
+                [--launch_browser] [--share_interface]
+                [--logging_level {DEBUG,INFO,WARN,ERROR,CRITICAL}]
+
+Automatic Speech Recognition (ASR) interface. Allows the user to enter text
+and display the text transcribed by the model.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --redis_host HOST     The host with the redis server. (default: localhost)
+  --redis_port PORT     The port of the redis server. (default: 6379)
+  --redis_db DB         The redis database to use. (default: 0)
+  --model_channel_in CHANNEL
+                        The channel to send the data to for making
+                        predictions. (default: audio)
+  --model_channel_out CHANNEL
+                        The channel to receive the predictions on. (default:
+                        transcription)
+  --timeout SECONDS     The number of seconds to wait for a prediction.
+                        (default: 2.0)
+  --title TITLE         The title to use for interface. (default: Automatic
+                        Speech Recognition (ASR))
+  --description DESC    The description to use in the interface. (default:
+                        Sends the recorded/uploaded audio to the model to
+                        transcribe and displays the result.)
+  --launch_browser      Whether to automatically launch the interface in a new
+                        tab of the default browser. (default: False)
+  --share_interface     Whether to publicly share the interface at
+                        https://XYZ.gradio.live/. (default: False)
+  --logging_level {DEBUG,INFO,WARN,ERROR,CRITICAL}
+                        The logging level to use (default: WARN)
+```
+
 ### Image classification
 
 ![Screenshot image classification](doc/img/imgcls.png)

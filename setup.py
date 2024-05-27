@@ -34,12 +34,14 @@ setup(
         "gradio",
         "redis",
         "opex",
+        "scipy",
     ],
     version="0.0.4",
     author='Peter Reutemann',
     author_email='fracpete@waikato.ac.nz',
     entry_points={
         "console_scripts": [
+            "gifr-asr=gifr.asr:sys_main",
             "gifr-imgcls=gifr.image_classification:sys_main",
             "gifr-imgseg=gifr.image_segmentation:sys_main",
             "gifr-objdet=gifr.object_detection:sys_main",
