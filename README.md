@@ -72,6 +72,95 @@ optional arguments:
                         The logging level to use (default: WARN)
 ```
 
+### Automatic Speech Recognition (ASR) + Text generation
+
+![Screenshot automatic speech recognition with text generation](doc/img/asr_textgen.png)
+
+```
+usage: gifr-textgen [-h] [--redis_host HOST] [--redis_port PORT]
+                    [--redis_db DB] [--model_channel_in CHANNEL]
+                    [--model_channel_out CHANNEL] [--sleep_time SECONDS]
+                    [--timeout SECONDS] [--title TITLE] [--description DESC]
+                    [--launch_browser] [--share_interface]
+                    [--logging_level {DEBUG,INFO,WARN,ERROR,CRITICAL}]
+                    [--audio_channel_in CHANNEL] [--audio_channel_out CHANNEL]
+                    [--text_channel_in CHANNEL] [--text_channel_out CHANNEL]
+                    [--send_text FIELD] [--json_response]
+                    [--receive_prediction FIELD] [--history_on]
+                    [--send_history FIELD] [--send_turns FIELD]
+                    [--receive_history FIELD] [--receive_turns FIELD]
+                    [--clean_response]
+
+Combined Automatic Speech Recognition (ASR) and text generation interface.
+Allows the user to record/upload audio, which gets transcribed and the
+transcription fed into the text generation model. The generated text is then
+displayed.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --redis_host HOST     The host with the redis server. (default: localhost)
+  --redis_port PORT     The port of the redis server. (default: 6379)
+  --redis_db DB         The redis database to use. (default: 0)
+  --model_channel_in CHANNEL
+                        The channel to send the data to for making
+                        predictions. (default: model_channel_in)
+  --model_channel_out CHANNEL
+                        The channel to receive the predictions on. (default:
+                        model_channel_out)
+  --sleep_time SECONDS  The sleep time in seconds for the pub-sub thread.
+                        (default: 0.01)
+  --timeout SECONDS     The number of seconds to wait for a response.
+                        (default: 1.0)
+  --title TITLE         The title to use for interface. (default: ASR+Text
+                        generation)
+  --description DESC    The description to use in the interface. (default:
+                        First transcribes the recorded/uploaded audio and then
+                        sends the transcript to the model to complete and
+                        displays the result.)
+  --launch_browser      Whether to automatically launch the interface in a new
+                        tab of the default browser. (default: False)
+  --share_interface     Whether to publicly share the interface at
+                        https://XYZ.gradio.live/. (default: False)
+  --logging_level {DEBUG,INFO,WARN,ERROR,CRITICAL}
+                        The logging level to use (default: WARN)
+  --audio_channel_in CHANNEL
+                        The channel to send the audio to for transcribing.
+                        (default: audio)
+  --audio_channel_out CHANNEL
+                        The channel to receive the transcriptions on.
+                        (default: transcription)
+  --text_channel_in CHANNEL
+                        The channel to send the text to for making
+                        predictions. (default: text)
+  --text_channel_out CHANNEL
+                        The channel to receive the text predictions on.
+                        (default: prediction)
+  --send_text FIELD     The field name in the JSON prompt used for sending the
+                        text, ignored if not provided. (default: prompt)
+  --json_response       Whether the reponse is a JSON object. (default: False)
+  --receive_prediction FIELD
+                        The field name in the JSON response used for receiving
+                        the predicted text, ignored if not provided. (default:
+                        text)
+  --history_on          Whether to keep track of the interactions. (default:
+                        False)
+  --send_history FIELD  The field name in the JSON query to use for sending
+                        the input history, ignored if not provided. (default:
+                        None)
+  --send_turns FIELD    The field name in the JSON query to use for sending
+                        the number of turns in the interaction, ignored if not
+                        provided. (default: None)
+  --receive_history FIELD
+                        The field name in the JSON response used for receiving
+                        the input history, ignored if not provided. (default:
+                        None)
+  --receive_turns FIELD
+                        The field name in the JSON response used for receiving
+                        the number of turns in the interaction, ignored if not
+                        provided. (default: None)
+  --clean_response      Whether to clean up the response. (default: False)
+```
+
 ### Image classification
 
 ![Screenshot image classification](doc/img/imgcls.png)

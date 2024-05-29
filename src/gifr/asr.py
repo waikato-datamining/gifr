@@ -16,12 +16,16 @@ _logger = logging.getLogger(PROG)
 state: State = None
 
 
-def predict(audio) -> str:
+def predict(audio, channel_out: str = None, channel_in: str = None) -> str:
     """
     Sends the audio file to the model and returns the transcribed text.
 
     :param audio: the audio file to send
     :type audio: str
+    :param channel_out: for overriding the state's out channel
+    :type channel_out: str
+    :param channel_in: for overriding the state's in channel
+    :type channel_in: str
     :return: the transcription result
     :rtype: str
     """
@@ -36,7 +40,7 @@ def predict(audio) -> str:
     state.logger.info("Transcribing...")
 
     # perform query
-    result = make_prediction(state, buf.getvalue())
+    result = make_prediction(state, buf.getvalue(), channel_in=channel_in, channel_out=channel_out)
 
     # parse response
     if result is None:

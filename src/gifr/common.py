@@ -29,11 +29,12 @@ ENV_GIFR_LOGLEVEL = "GIFR_LOGLEVEL"
 class State:
     connection: redis.Redis = None
     pubsub = None
-    channel_out: str = "redis_in"
-    channel_in: str = "redis_out"
+    channel_out: str = None
+    channel_in: str = None
     timeout: float = 5.0
     title: str = "gifr"
     description: str = ""
+    sleep_time: float = 0.01
     data = None
     logger: logging.Logger = None
     params: dict = field(default_factory=dict)
@@ -88,7 +89,7 @@ def set_logging_level(logger: logging.Logger, level: str):
 
 def create_parser(description: str, prog: str, host: str = "localhost", port: int = 6379, db: int = 0,
                   model_channel_in: str = "model_channel_in", model_channel_out: str = "model_channel_out",
-                  timeout: float = 5.0, ui_title: str = "gifr", ui_desc: str = "") -> argparse.ArgumentParser:
+                  timeout: float = 5.0, ui_title: str = "gifr", ui_desc: str = "", sleep_time: float = 0.01) -> argparse.ArgumentParser:
     """
     Creates a base parser with options for redis.
 
@@ -102,9 +103,9 @@ def create_parser(description: str, prog: str, host: str = "localhost", port: in
     :type port: int
     :param db: the redis database to use
     :type db: int
-    :param model_channel_in: the redis channel to send the data to for making predictions
+    :param model_channel_in: the redis channel to send the data to for making predictions, skips adding parameter if None
     :type model_channel_in: str
-    :param model_channel_out: the redis channel to receive the predictions on
+    :param model_channel_out: the redis channel to receive the predictions on, skips adding parameter if None
     :type model_channel_out: str
     :param timeout: the number of seconds to wait for a prediction
     :type timeout: float
@@ -112,15 +113,20 @@ def create_parser(description: str, prog: str, host: str = "localhost", port: in
     :type ui_title: str
     :param ui_desc: the description to use in the interface
     :type ui_desc: str
+    :param sleep_time: the sleep time for the pubsub thread
+    :type sleep_time: float
     """
     parser = argparse.ArgumentParser(
         description=description, prog=prog, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("--redis_host", metavar="HOST", help="The host with the redis server.", default=host, type=str, required=False)
     parser.add_argument("--redis_port", metavar="PORT", help="The port of the redis server.", default=port, type=int, required=False)
     parser.add_argument("--redis_db", metavar="DB", help="The redis database to use.", default=db, type=int, required=False)
-    parser.add_argument("--model_channel_in", metavar="CHANNEL", help="The channel to send the data to for making predictions.", default=model_channel_in, type=str, required=False)
-    parser.add_argument("--model_channel_out", metavar="CHANNEL", help="The channel to receive the predictions on.", default=model_channel_out, type=str, required=False)
-    parser.add_argument("--timeout", metavar="SECONDS", help="The number of seconds to wait for a prediction.", default=timeout, type=float, required=False)
+    if model_channel_in is not None:
+        parser.add_argument("--model_channel_in", metavar="CHANNEL", help="The channel to send the data to for making predictions.", default=model_channel_in, type=str, required=False)
+    if model_channel_out is not None:
+        parser.add_argument("--model_channel_out", metavar="CHANNEL", help="The channel to receive the predictions on.", default=model_channel_out, type=str, required=False)
+    parser.add_argument("--sleep_time", metavar="SECONDS", help="The sleep time in seconds for the pub-sub thread.", default=sleep_time, type=float, required=False)
+    parser.add_argument("--timeout", metavar="SECONDS", help="The number of seconds to wait for a response.", default=timeout, type=float, required=False)
     parser.add_argument("--title", metavar="TITLE", help="The title to use for interface.", default=ui_title, type=str, required=False)
     parser.add_argument("--description", metavar="DESC", help="The description to use in the interface.", default=ui_desc, type=str, required=False)
     parser.add_argument("--launch_browser", action="store_true", help="Whether to automatically launch the interface in a new tab of the default browser.")
@@ -140,32 +146,44 @@ def init_state(ns: argparse.Namespace) -> State:
     """
     result = State(
         connection=redis.Redis(host=ns.redis_host, port=ns.redis_port, db=ns.redis_db),
-        channel_in=ns.model_channel_in,
-        channel_out=ns.model_channel_out,
         timeout=ns.timeout,
         title=ns.title,
         description=ns.description,
+        sleep_time=ns.sleep_time,
     )
 
     for att in dir(ns):
         if att.startswith("_"):
             continue
-        if att in ["redis_host", "redis_port", "redis_db", "model_channel_in", "model_channel_out", "timeout", "title", "description"]:
+        if att == "model_channel_in":
+            result.channel_in = ns.model_channel_in
+        if att == "model_channel_out":
+            result.channel_in = ns.model_channel_out
+        if att in ["redis_host", "redis_port", "redis_db", "timeout", "title", "description", "sleep_time", "model_channel_in", "model_channel_out"]:
             continue
         result.params[att] = getattr(ns, att)
 
     return result
 
 
-def make_prediction(state: State, data):
+def make_prediction(state: State, data, channel_out: str = None, channel_in: str = None):
     """
     Makes a prediction by broadcasting the data and waiting for a result coming through.
 
     :param state: the state to use to broadcasting/listening
     :type state: State
     :param data: the data to send
+    :param channel_out: for overriding the state's out channel
+    :type channel_out: str
+    :param channel_in: for overriding the state's in channel
+    :type channel_in: str
     :return: the received data, None if failed or timeout
     """
+    if channel_out is None:
+        channel_out = state.channel_out
+    if channel_in is None:
+        channel_in = state.channel_in
+
     def anon_handler(message):
         data = message['data']
         state.data = data
@@ -174,9 +192,9 @@ def make_prediction(state: State, data):
         state.pubsub = None
 
     state.pubsub = state.connection.pubsub()
-    state.pubsub.psubscribe(**{state.channel_out: anon_handler})
-    state.pubsub_thread = state.pubsub.run_in_thread(sleep_time=0.01)
-    state.connection.publish(state.channel_in, data)
+    state.pubsub.psubscribe(**{channel_out: anon_handler})
+    state.pubsub_thread = state.pubsub.run_in_thread(sleep_time=state.sleep_time)
+    state.connection.publish(channel_in, data)
 
     # wait for data to show up
     start = datetime.now()
