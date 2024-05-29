@@ -43,8 +43,8 @@ usage: gifr-asr [-h] [--redis_host HOST] [--redis_port PORT] [--redis_db DB]
                 [--launch_browser] [--share_interface]
                 [--logging_level {DEBUG,INFO,WARN,ERROR,CRITICAL}]
 
-Automatic Speech Recognition (ASR) interface. Allows the user to enter text
-and display the text transcribed by the model.
+Automatic Speech Recognition (ASR) interface. Allows the user to record/upload
+audio and display the text transcribed by the model.
 
 optional arguments:
   -h, --help            show this help message and exit

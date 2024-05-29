@@ -91,7 +91,7 @@ def main(args=None):
     """
     global state
     init_logging()
-    parser = create_parser("Automatic Speech Recognition (ASR) interface. Allows the user to enter text "
+    parser = create_parser("Automatic Speech Recognition (ASR) interface. Allows the user to record/upload audio "
                            + "and display the text transcribed by the model.",
                            PROG, model_channel_in="audio", model_channel_out="transcription",
                            timeout=2.0, ui_title="Automatic Speech Recognition (ASR)",
