@@ -4,6 +4,8 @@ import traceback
 from typing import Tuple
 
 import gradio as gr
+import gifr.asr
+import gifr.text_generation
 
 from gifr.asr import predict as predict_asr
 from gifr.common import init_logging, set_logging_level, create_parser, init_state, State
@@ -24,6 +26,9 @@ def predict(audio) -> Tuple[str, str]:
     :return: the transcribed audio and the generated text
     :rtype: tuple
     """
+    global state
+    gifr.asr.state = state
+    gifr.text_generation.state = state
     transcript = predict_asr(audio, channel_in=state.params["audio_channel_in"], channel_out=state.params["audio_channel_out"])
     text = predict_text_generation(transcript, channel_in=state.params["text_channel_in"], channel_out=state.params["text_channel_out"])
     return transcript, text
